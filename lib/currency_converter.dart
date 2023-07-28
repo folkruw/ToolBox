@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -167,12 +168,31 @@ class CurrencyConverterPageState extends State<CurrencyConverterPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextField(
-              controller: _amountController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                  labelText: 'Entrez le montant en $_selectedSourceCurrency'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: _amountController,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                      labelText:
+                          'Entrez le montant en ${_currencies[_selectedSourceCurrency]}',
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    '${NumberFormat("#,##0.00", "fr").format(_result)} ${_currencySymbols[_selectedDestinationCurrency]}',
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Row(
@@ -218,16 +238,25 @@ class CurrencyConverterPageState extends State<CurrencyConverterPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _isLoading ? null : _convertCurrency,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue, // Set the button background color to blue
+                onPrimary: Colors.white, // Set the button text color to white
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              ),
               child: _isLoading
-                  ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
                     )
-                  : const Text('Convertir'),
+                  : const Text(
+                      'Convertir',
+                      style: TextStyle(fontSize: 16),
+                    ),
             ),
-            const SizedBox(height: 16),
-            Text(
-                '${_result.toStringAsFixed(2)} ${_currencySymbols[_selectedDestinationCurrency]}',
-                style: const TextStyle(fontSize: 17)),
           ],
         ),
       ),
