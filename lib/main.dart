@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toolbox/countries/countries.dart';
 import 'package:toolbox/currency_converter.dart';
 import 'package:toolbox/home_page.dart';
+import 'package:toolbox/weather/weather_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,6 +48,10 @@ class MainScreenState extends State<MainScreen> {
     ListTileData(
       title: 'Convertisseur de devises',
       page: const CurrencyConverterPage(),
+    ),
+    ListTileData(
+      title: 'Météo',
+      page: const WeatherScreen(),
     ),
     // Add more ListTiles here if needed
   ];

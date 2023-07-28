@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toolbox/api_key.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,7 +86,7 @@ class CurrencyConverterPageState extends State<CurrencyConverterPage> {
     });
 
     try {
-      const apiKey = "PVVxafJvw4oBJfa9lCwS1lv2c3LUkZjr";
+      const apiKey = APIKey.currencyAPIKey;
       final amount = double.parse(_amountController.text);
 
       final url = Uri.parse(
