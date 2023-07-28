@@ -1,6 +1,6 @@
 final Map<String, String> continentTranslations = {
   'Africa': 'Afrique',
-  'Americas': 'Amériques',
+  'Americas': 'Amérique',
   'Asia': 'Asie',
   'Europe': 'Europe',
   'Oceania': 'Océanie',

@@ -54,20 +54,7 @@ class _CountriesPageState extends State<CountriesPage> {
     List<dynamic> filteredCountries = getFilteredCountries();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pays'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CountrySearchDelegate(countries: countries),
-              );
-            },
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
+      appBar: null,
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
