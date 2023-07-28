@@ -426,3 +426,20 @@ final Map<String, String> capitalTranslations = {
   'Yerevan': 'Erevan',
   'Zagreb': 'Zagreb',
 };
+
+final Map<String, String> phonesTranslations = {
+  'Phone Validation': 'Validation de numéro de téléphone',
+  'Enter Phone Number': 'Entrez le numéro de téléphone',
+  'Valid': 'Valide',
+  'Number': 'Numéro',
+  'true': 'Oui',
+  'false': 'Non',
+  'Location': 'Localisation',
+  'Carrier': 'Opérateur',
+  'Line Type': 'Type de ligne',
+  'Country Prefix': 'Préfixe du pays',
+  'Country Code': 'Code du pays',
+  'Country Name': 'Nom du pays',
+  'Local Format': 'Format local',
+  'International Format': 'Format international',
+};

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toolbox/countries/countries.dart';
 import 'package:toolbox/currency_converter.dart';
 import 'package:toolbox/home_page.dart';
+import 'package:toolbox/phone_number.dart';
 import 'package:toolbox/weather/weather_screen.dart';
 
 void main() {
@@ -52,6 +53,10 @@ class MainScreenState extends State<MainScreen> {
     ListTileData(
       title: 'Météo',
       page: const WeatherScreen(),
+    ),
+    ListTileData(
+      title: 'Information sur un numéro de téléphone',
+      page: const PhoneValidationScreen(),
     ),
     // Add more ListTiles here if needed
   ];

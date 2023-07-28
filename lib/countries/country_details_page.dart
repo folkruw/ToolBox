@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:toolbox/countries/translations.dart';
 import 'package:toolbox/countries/utils.dart';
+import 'package:toolbox/translations.dart';
 
 class CountryDetailsPage extends StatelessWidget {
   final dynamic country;

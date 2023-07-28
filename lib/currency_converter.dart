@@ -240,8 +240,7 @@ class CurrencyConverterPageState extends State<CurrencyConverterPage> {
             ElevatedButton(
               onPressed: _isLoading ? null : _convertCurrency,
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Set the button background color to blue
-                onPrimary: Colors.white, // Set the button text color to white
+                foregroundColor: Colors.white, backgroundColor: Colors.blue, // Set the button text color to white
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
               ),
