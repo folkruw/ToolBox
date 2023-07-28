@@ -442,4 +442,5 @@ final Map<String, String> phonesTranslations = {
   'Country Name': 'Nom du pays',
   'Local Format': 'Format local',
   'International Format': 'Format international',
+  'null': 'N/A',
 };

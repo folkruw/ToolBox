@@ -151,7 +151,11 @@ class PhoneValidationScreenState extends State<PhoneValidationScreen> {
   }
 
   String _getLineType() {
-    return _validationResult['line_type'];
+    if(_validationResult['line_type'] == null) {
+      return "N/A";
+    } else {
+      return _validationResult['line_type'];
+    }
   }
 
 }

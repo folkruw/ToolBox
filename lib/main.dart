@@ -3,6 +3,7 @@ import 'package:toolbox/countries/countries.dart';
 import 'package:toolbox/currency_converter.dart';
 import 'package:toolbox/home_page.dart';
 import 'package:toolbox/phone_number.dart';
+import 'package:toolbox/profiles/profile_screen.dart';
 import 'package:toolbox/weather/weather_screen.dart';
 
 void main() {
@@ -43,22 +44,25 @@ class MainScreenState extends State<MainScreen> {
       page: const HomePage(),
     ),
     ListTileData(
-      title: 'Pays',
+      title: 'Liste des pays',
       page: const CountriesPage(),
+    ),
+    ListTileData(
+      title: 'Météo à Mons',
+      page: const WeatherScreen(),
     ),
     ListTileData(
       title: 'Convertisseur de devises',
       page: const CurrencyConverterPage(),
     ),
     ListTileData(
-      title: 'Météo',
-      page: const WeatherScreen(),
-    ),
-    ListTileData(
-      title: 'Information sur un numéro de téléphone',
+      title: 'Numéro de téléphone',
       page: const PhoneValidationScreen(),
     ),
-    // Add more ListTiles here if needed
+    ListTileData(
+      title: 'Génération de profil',
+      page: const ProfileScreen(),
+    ),
   ];
 
   @override
