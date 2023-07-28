@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toolbox/countries/countries.dart';
+import 'package:toolbox/currency_converter.dart';
 import 'package:toolbox/home_page.dart';
 
 void main() {
@@ -26,12 +27,29 @@ class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   String _currentPageTitle = 'Accueil'; // Initialize with "Accueil"
-  Widget _currentBody = const HomePage(); // Initialize with CountriesPage()
+  Widget _currentBody = const HomePage(); // Initialize with HomePage()
+
+  // Define a list containing ListTileData for each item in the drawer
+  final List<ListTileData> _listTileData = [
+    ListTileData(
+      title: 'Accueil',
+      page: const HomePage(),
+    ),
+    ListTileData(
+      title: 'Pays',
+      page: const CountriesPage(),
+    ),
+    ListTileData(
+      title: 'Convertisseur de devises',
+      page: const CurrencyConverterPage(),
+    ),
+    // Add more ListTiles here if needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,32 +66,33 @@ class _MainScreenState extends State<MainScreen> {
               accountName: Text('Nicolas'),
               accountEmail: Text('nicolas@example.com'),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/profile_picture.png'),
+                // backgroundImage: AssetImage('assets/profile_picture.png'),
               ),
             ),
-            ListTile(
-              title: const Text('Accueil'),
-              onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _currentPageTitle = 'Accueil'; // Update title to "Accueil"
-                  _currentBody = const HomePage();
-                });
-              },
-            ),
-            ListTile(
-              title: const Text('Pays'),
-              onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _currentPageTitle = 'Pays'; // Update title to "Pays"
-                  _currentBody = const CountriesPage();
-                });
-              },
-            ),
+            // Create ListTiles dynamically using the _listTileData
+            ..._listTileData.map((data) {
+              return ListTile(
+                title: Text(data.title),
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    _currentPageTitle = data.title; // Update the title using the selected ListTile title
+                    _currentBody = data.page; // Update the body using the associated page of the selected ListTile
+                  });
+                },
+              );
+            }).toList(),
           ],
         ),
       ),
     );
   }
+}
+
+// Create a class to represent the information of each ListTile
+class ListTileData {
+  final String title;
+  final Widget page;
+
+  ListTileData({required this.title, required this.page});
 }

@@ -8,10 +8,10 @@ class CountriesPage extends StatefulWidget {
   const CountriesPage({Key? key}) : super(key: key);
 
   @override
-  _CountriesPageState createState() => _CountriesPageState();
+  CountriesPageState createState() => CountriesPageState();
 }
 
-class _CountriesPageState extends State<CountriesPage> {
+class CountriesPageState extends State<CountriesPage> {
   List<dynamic> countries = [];
   List<String> continents = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
   String selectedContinent = '';
