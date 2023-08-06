@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toolbox/api_key.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,31 +85,30 @@ class CurrencyConverterPageState extends State<CurrencyConverterPage> {
     });
 
     try {
-      const apiKey = APIKey.currencyAPIKey;
       final amount = double.parse(_amountController.text);
 
       final url = Uri.parse(
-          "https://api.apilayer.com/exchangerates_data/convert?to=$_selectedDestinationCurrency&from=$_selectedSourceCurrency&amount=$amount");
+          "https://open.er-api.com/v6/latest/$_selectedSourceCurrency");
 
-      final response = await http.get(url, headers: {"apikey": apiKey});
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data["success"]) {
-          setState(() {
-            _result = data["result"];
-            _isLoading = false;
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Conversion échouée. Veuillez réessayer."),
-            ),
-          );
-          setState(() {
-            _isLoading = false;
-          });
-        }
+        final double rate = data["rates"][_selectedDestinationCurrency];
+
+        setState(() {
+          _result = amount * rate;
+          _isLoading = false;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Conversion échouée. Veuillez réessayer."),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
       }
     } catch (e) {
       if (kDebugMode) {

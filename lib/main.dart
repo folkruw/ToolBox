@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:toolbox/countries/countries.dart';
 import 'package:toolbox/currency_converter.dart';
 import 'package:toolbox/home_page.dart';
-import 'package:toolbox/phone_number.dart';
 import 'package:toolbox/profiles/profile_screen.dart';
-import 'package:toolbox/weather/weather_screen.dart';
+import 'package:toolbox/qr_code.dart';
+import 'package:toolbox/weather_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,20 +44,20 @@ class MainScreenState extends State<MainScreen> {
       page: const HomePage(),
     ),
     ListTileData(
-      title: 'Liste des pays',
-      page: const CountriesPage(),
-    ),
-    ListTileData(
-      title: 'Météo à Mons',
-      page: const WeatherScreen(),
+      title: 'Code QR',
+      page: const QRCodeGeneratorApp(),
     ),
     ListTileData(
       title: 'Convertisseur de devises',
       page: const CurrencyConverterPage(),
     ),
     ListTileData(
-      title: 'Numéro de téléphone',
-      page: const PhoneValidationScreen(),
+      title: 'Liste des pays',
+      page: const CountriesPage(),
+    ),
+    ListTileData(
+      title: 'Météo',
+      page: const WeatherScreen(),
     ),
     ListTileData(
       title: 'Génération de profil',
