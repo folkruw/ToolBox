@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -20,6 +21,7 @@ class WeatherScreenState extends State<WeatherScreen> {
 
   List<String> hours = [];
   List<double> temperatures = [];
+  List<int> weatherCodes = [];
 
   @override
   void initState() {
@@ -81,12 +83,15 @@ class WeatherScreenState extends State<WeatherScreen> {
                   onTap: () {
                     _pageController.jumpToPage(index);
                   },
-                  child: Text(
-                    time,
-                    style: const TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  child: Align( // Changer le widget Center à Align
+                    alignment: Alignment.topCenter, // Ajoutez cette ligne pour l'aligner en haut
+                    child: Text(
+                      time,
+                      style: const TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 );
@@ -108,8 +113,9 @@ class WeatherScreenState extends State<WeatherScreen> {
 
 
   Future<void> fetchWeatherData() async {
-    const apiUrl =
-        'https://api.open-meteo.com/v1/forecast?latitude=50.4541&longitude=3.9523&hourly=temperature_2m,weathercode';
+    Position position = await _determinePosition(); // Obtenez la position actuelle
+    String apiUrl =
+        'https://api.open-meteo.com/v1/forecast?latitude=${position.latitude}&longitude=${position.longitude}&hourly=temperature_2m,weathercode';
 
     final response = await http.get(Uri.parse(apiUrl));
     if (response.statusCode == 200) {
@@ -117,8 +123,8 @@ class WeatherScreenState extends State<WeatherScreen> {
       final hourlyData = data['hourly'];
 
       List<String> fetchedHours = List<String>.from(hourlyData['time']);
-      List<double> fetchedTemperatures =
-      List<double>.from(hourlyData['temperature_2m']);
+      List<double> fetchedTemperatures = List<double>.from(hourlyData['temperature_2m']);
+      List<int> fetchedWeatherCodes = List<int>.from(hourlyData['weathercode']);
 
       final now = DateTime.now();
       final currentDateFormatted = DateFormat('yyyy-MM-dd').format(now);
@@ -143,6 +149,7 @@ class WeatherScreenState extends State<WeatherScreen> {
       setState(() {
         hours = fetchedHours;
         temperatures = fetchedTemperatures;
+        weatherCodes = fetchedWeatherCodes; // add this line
         updateTime(index);
       });
 
@@ -160,48 +167,48 @@ class WeatherScreenState extends State<WeatherScreen> {
   IconData getWeatherIcon(int weatherCode) {
     switch (weatherCode) {
       case 0:
-        return Icons.wb_sunny;
+        return Icons.wb_sunny; // ☀️
       case 1:
       case 2:
       case 3:
-        return Icons.cloud;
+        return Icons.cloud; // ⛅
       case 45:
       case 48:
-        return Icons.cloud_queue;
+        return Icons.cloud_queue; // 🌫️
       case 51:
       case 53:
       case 55:
-        return Icons.grain;
+        return Icons.grain; // 🌧️
       case 56:
       case 57:
-        return Icons.ac_unit;
+        return Icons.ac_unit; // ❄️
       case 61:
       case 63:
       case 65:
-        return Icons.opacity;
+        return Icons.opacity; // 🌦️
       case 66:
       case 67:
-        return Icons.ac_unit_outlined;
+        return Icons.ac_unit_outlined; // 🌨️
       case 71:
       case 73:
       case 75:
-        return Icons.ac_unit_rounded;
+        return Icons.ac_unit_rounded; // ❄️
       case 77:
-        return Icons.grain_outlined;
+        return Icons.grain_outlined; // 🌧️
       case 80:
       case 81:
       case 82:
-        return Icons.show_chart;
+        return Icons.show_chart; // 🌧️
       case 85:
       case 86:
-        return Icons.ac_unit_sharp;
+        return Icons.ac_unit_sharp; // ❄️
       case 95:
-        return Icons.flash_on;
+        return Icons.flash_on; // ⚡
       case 96:
       case 99:
-        return Icons.flash_on_outlined;
+        return Icons.flash_on_outlined; // ⛈️
       default:
-        return Icons.error_outline; // Icône par défaut pour un code météo inconnu
+        return Icons.error_outline; // 🚫
     }
   }
 
@@ -232,9 +239,34 @@ class WeatherScreenState extends State<WeatherScreen> {
   Future<Map<String, dynamic>> fetchTemperatureAndWeatherCode(
       int index) async {
     if (index >= 0 && index < temperatures.length) {
-      return {'temperature': temperatures[index], 'weatherCode': -1};
+      return {'temperature': temperatures[index], 'weatherCode': weatherCodes[index]}; // modify this line
     } else {
       return {'temperature': 0.0, 'weatherCode': -1};
     }
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Le service de localisation est désactivé.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error(
+            'Les permissions de localisation sont définitivement refusées, nous ne pouvons pas demander les permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        return Future.error('Les permissions de localisation sont refusées');
+      }
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 }
