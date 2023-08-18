@@ -41,7 +41,7 @@ class EuroMillionDraw {
 }
 
 class EuroMillionScreen extends StatefulWidget {
-  const EuroMillionScreen({super.key});
+  const EuroMillionScreen({Key? key}) : super(key: key);
 
   @override
   _EuroMillionScreenState createState() => _EuroMillionScreenState();
@@ -57,32 +57,35 @@ class _EuroMillionScreenState extends State<EuroMillionScreen> {
   }
 
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('https://euromillions.api.pedromealha.dev/draws'));
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = json.decode(response.body);
-      final List<EuroMillionDraw> euroMillionDraws = jsonData.map((data) {
-        DateTime date = DateFormat('E, d MMM yyyy HH:mm:ss z').parse(data['date']);
-        return EuroMillionDraw(
-          date: date,
-          drawId: data['draw_id'],
-          hasWinner: data['has_winner'],
-          id: data['id'],
-          numbers: List<String>.from(data['numbers']),
-          prize: data['prize'],
-          stars: List<String>.from(data['stars']),
-        );
-      }).toList();
+    try {
+      final response = await http.get(Uri.parse('https://euromillions.api.pedromealha.dev/draws'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonData = json.decode(response.body);
+        final List<EuroMillionDraw> euroMillionDraws = jsonData.map((data) {
+          DateTime date = DateFormat('E, d MMM yyyy HH:mm:ss z').parse(data['date']);
+          return EuroMillionDraw(
+            date: date,
+            drawId: data['draw_id'],
+            hasWinner: data['has_winner'],
+            id: data['id'],
+            numbers: List<String>.from(data['numbers']),
+            prize: data['prize'],
+            stars: List<String>.from(data['stars']),
+          );
+        }).toList();
 
-      euroMillionDraws.sort((a, b) => b.date.compareTo(a.date));
+        euroMillionDraws.sort((a, b) => b.date.compareTo(a.date));
 
-      setState(() {
-        draws = euroMillionDraws;
-      });
-    } else {
-      throw Exception('Failed to load data');
+        setState(() {
+          draws = euroMillionDraws;
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +96,10 @@ class _EuroMillionScreenState extends State<EuroMillionScreen> {
         itemBuilder: (context, index) {
           final draw = draws[index];
           return ListTile(
-            title: Text('Tirage du ${draw.date}'),
+            title: Text('Tirage du ${DateFormat('d MMM yyyy').format(draw.date)}'),
             subtitle: Text(
-                'Numéros: ${draw.numbers.join(", ")} | Étoiles: ${draw.stars.join(", ")}'),
-            trailing: Text('Gain: ${draw.prize.toStringAsFixed(2)} €'),
+                '${draw.numbers.join(", ")} | ${draw.stars.join(", ")}'),
+            trailing: Text(NumberFormat.currency(locale: 'fr', symbol: '€', decimalDigits: 2).format(draw.prize)),
           );
         },
       ),
@@ -105,7 +108,7 @@ class _EuroMillionScreenState extends State<EuroMillionScreen> {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
