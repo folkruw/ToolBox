@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toolbox/EuroMillionDraw.dart';
 import 'package:toolbox/countries/countries.dart';
 import 'package:toolbox/currency_converter.dart';
 import 'package:toolbox/home_page.dart';
@@ -44,24 +45,28 @@ class MainScreenState extends State<MainScreen> {
       page: const HomePage(),
     ),
     ListTileData(
+      title: 'Météo',
+      page: const WeatherScreen(),
+    ),
+    ListTileData(
       title: 'Code QR',
       page: const QRCodeGeneratorApp(),
     ),
     ListTileData(
-      title: 'Convertisseur de devises',
-      page: const CurrencyConverterPage(),
+      title: 'Euro Million',
+      page: const EuroMillionScreen(),
     ),
     ListTileData(
       title: 'Liste des pays',
       page: const CountriesPage(),
     ),
     ListTileData(
-      title: 'Météo',
-      page: const WeatherScreen(),
-    ),
-    ListTileData(
       title: 'Génération de profil',
       page: const ProfileScreen(),
+    ),
+    ListTileData(
+      title: 'Convertisseur de devises',
+      page: const CurrencyConverterPage(),
     ),
   ];
 
